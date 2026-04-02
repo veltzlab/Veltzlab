@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   EnvelopeSimple,
   LinkedinLogo,
@@ -52,8 +52,6 @@ const socials = [
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -69,7 +67,6 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      ref={sectionRef}
       className="relative w-full bg-[#050505] pt-32 pb-0 overflow-hidden"
     >
       {/* Ambient glow */}
