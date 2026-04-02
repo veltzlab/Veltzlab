@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Dyson Sans Modern';
+  src: url('/fonts/dyson-sans-modern.ttf') format('truetype');
+  font-display: swap;
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@theme {
+  --font-sans: "Dyson Sans Modern", sans-serif;
+  --color-canvas: #050505;
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-accent: #3b82f6; /* Electric Blue / Emerald etc. Let's use pure white for ultimate minimal or a subtle glow */
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--color-canvas)] text-zinc-400 font-light antialiased selection:bg-white/20 selection:text-white min-h-[100dvh] overflow-x-clip cursor-none;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  a, button, [role="button"], input, select, textarea, [data-cursor="pointer"] {
+    @apply cursor-none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-zinc-100 font-normal tracking-tight;
+  }
+}
+
+/* Auto-pan keyframe for scrolling images */
+@keyframes imagePan {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(-100% + 808px)); }
+}
+
+/* Utilities for "Liquid Glass" and Double-Bezel */
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)];
+  }
+  
+  .glass-pill {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)];
+  }
+}
+
+/* ── Range slider thumb — Playground */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #f35516;
+  cursor: none;
+  margin-top: -6px;
+  box-shadow: 0 0 8px rgba(243,85,22,0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 14px rgba(243,85,22,0.7);
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #f35516;
+  cursor: none;
+  box-shadow: 0 0 8px rgba(243,85,22,0.5);
+}
+
