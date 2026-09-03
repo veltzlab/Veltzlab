@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import {
   EnvelopeSimple,
   LinkedinLogo,
-  GithubLogo,
-  InstagramLogo,
   ArrowUpRight,
   WhatsappLogo,
   MapPin,
@@ -23,30 +21,28 @@ const channels = [
   {
     icon: EnvelopeSimple,
     label: 'E-mail',
-    value: 'oi@eduardocoelho.dev',
-    href: 'mailto:oi@eduardocoelho.dev',
+    value: 'veltzgroup@gmail.com',
+    href: 'mailto:veltzgroup@gmail.com',
     hint: 'Respondo em até 24h',
   },
   {
     icon: WhatsappLogo,
     label: 'WhatsApp',
-    value: '+55 (11) 99999-9999',
-    href: 'https://wa.me/5511999999999',
+    value: '+55 33 93618-0573',
+    href: 'https://wa.me/5533936180573',
     hint: 'Para projetos urgentes',
   },
   {
     icon: LinkedinLogo,
     label: 'LinkedIn',
-    value: '/in/eduardocoelho',
-    href: 'https://linkedin.com/in/eduardocoelho',
+    value: '/in/eduardocoeelho',
+    href: 'https://linkedin.com/in/eduardocoeelho',
     hint: 'Networking & oportunidades',
   },
 ];
 
 const socials = [
-  { icon: GithubLogo, label: 'GitHub', href: 'https://github.com/eduardocoelho' },
-  { icon: LinkedinLogo, label: 'LinkedIn', href: 'https://linkedin.com/in/eduardocoelho' },
-  { icon: InstagramLogo, label: 'Instagram', href: 'https://instagram.com/eduardocoelho' },
+  { icon: LinkedinLogo, label: 'LinkedIn', href: 'https://linkedin.com/in/eduardocoeelho' },
 ];
 
 export default function Contact() {
@@ -67,7 +63,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full bg-[#050505] pt-32 pb-0 overflow-hidden"
+      className="relative w-full bg-[#030304] pt-32 pb-0 overflow-hidden"
     >
       {/* Ambient glow */}
       <div
@@ -255,7 +251,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.18em] font-medium text-zinc-500 mb-0.5">Localização</p>
-                  <p className="text-sm font-medium text-white">São Paulo, Brasil</p>
+                  <p className="text-sm font-medium text-white">Minas Gerais, Brasil</p>
                   <p className="text-[11px] text-zinc-600 mt-0.5">Disponível remotamente</p>
                 </div>
               </div>
@@ -270,7 +266,7 @@ export default function Contact() {
           className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 pb-10"
         >
           <p className="text-xs text-zinc-600">
-            © {new Date().getFullYear()} Eduardo Coelho. Todos os direitos reservados.
+            © {new Date().getFullYear()} Veltz. Todos os direitos reservados.
           </p>
 
           <div className="flex items-center gap-3">

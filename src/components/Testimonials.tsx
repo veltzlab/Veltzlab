@@ -7,39 +7,63 @@ const EASE = [0.32, 0.72, 0, 1] as const;
 const testimonials = [
   {
     id: 1,
-    photo: 'https://i.pravatar.cc/150?img=11',
-    name: 'Rodrigo Almeida',
-    role: 'CEO',
-    company: 'NovaTech Soluções',
+    initials: 'LF',
+    accent: '#caa452',
+    name: 'Luís Felipe',
+    role: 'Advogado — OAB/MG',
+    company: 'Luís Felipe Advocacia',
     stars: 5,
-    text: 'Eduardo transformou completamente a presença digital da nossa empresa. A landing page que ele construiu aumentou nossa conversão em 340% no primeiro mês. Engenharia de altíssimo nível com atenção obsessiva aos detalhes.',
+    text: 'O Eduardo entregou exatamente o que eu precisava: um site sério, rápido e que transmite autoridade para quem busca assessoria jurídica em leilões. Recebo elogios constantes sobre a primeira impressão que o site passa.',
   },
   {
     id: 2,
-    photo: 'https://i.pravatar.cc/150?img=5',
-    name: 'Camila Ferreira',
-    role: 'Head de Produto',
-    company: 'Fintech Orbit',
+    initials: 'ED',
+    accent: '#8b5cf6',
+    name: 'Dra. Elisa Duarte',
+    role: 'Oftalmologista',
+    company: 'Dra. Elisa Duarte — Clínica de Olhos',
     stars: 5,
-    text: 'Trabalhamos juntos no redesign completo do nosso dashboard. Eduardo entregou um resultado que superou todas as expectativas — performance, acessibilidade e design impecáveis. É raro encontrar alguém que une código e estética tão bem.',
+    text: 'Meu site ficou lindo e muito fácil de usar. As pacientes conseguem agendar consulta pelo WhatsApp direto da página, e isso facilitou demais o dia a dia da clínica.',
   },
   {
     id: 3,
-    photo: 'https://i.pravatar.cc/150?img=47',
-    name: 'Bruno Tavares',
-    role: 'Founder',
-    company: 'Launchpad Studio',
+    initials: 'RM',
+    accent: '#eab308',
+    name: 'Equipe Resort Místico',
+    role: 'Gerência',
+    company: 'Hotel Club Resort Místico',
     stars: 5,
-    text: 'Contratei o Eduardo para construir o MVP do nosso produto em tempo recorde. Entregou em 3 semanas o que estimávamos para 2 meses. Código limpo, documentado e escalável. Parceiro de confiança para qualquer projeto crítico.',
+    text: 'Precisávamos de um site que passasse a sensação de tranquilidade do resort, e o Eduardo conseguiu capturar isso perfeitamente. As reservas pelo WhatsApp aumentaram desde que o site foi ao ar.',
   },
   {
     id: 4,
-    photo: 'https://i.pravatar.cc/150?img=9',
-    name: 'Isabela Monteiro',
-    role: 'Diretora de Marketing',
-    company: 'Grupo Estilo',
+    initials: 'HR',
+    accent: '#f35516',
+    name: 'Dr. Hugo Rocha',
+    role: 'Cirurgião-Dentista',
+    company: 'Hugo Rocha Odontologia',
     stars: 5,
-    text: 'O portfolio que o Eduardo criou para nossa equipe criativa virou referência no setor. Vários parceiros perguntaram quem fez. A combinação de animações cinematográficas com performance técnica é algo que você não encontra facilmente.',
+    text: 'Site moderno, rápido e que já chega filtrando quem realmente tem interesse nos tratamentos. O Eduardo entendeu exatamente o posicionamento que eu queria para a clínica.',
+  },
+  {
+    id: 5,
+    initials: 'FA',
+    accent: '#0d9488',
+    name: 'Dra. Fabrícia',
+    role: 'Cirurgiã-Dentista',
+    company: 'Facth Odontologia',
+    stars: 5,
+    text: 'O site trouxe muito mais credibilidade pro consultório. A forma como os números e a prova social foram apresentados ajuda demais a converter quem visita a página em agendamento.',
+  },
+  {
+    id: 6,
+    initials: 'RC',
+    accent: '#a855f7',
+    name: 'Dra. Raquel Canelhas',
+    role: 'Oftalmologista',
+    company: 'Dra. Raquel Canelhas',
+    stars: 5,
+    text: 'Queria uma página direta, elegante e que conversasse com meu público. O resultado superou minhas expectativas — o design tem tudo a ver com o posicionamento que eu queria para minha marca.',
   },
 ];
 
@@ -78,7 +102,7 @@ export default function Testimonials() {
   const t = testimonials[current];
 
   return (
-    <section id="testimonials" className="relative w-full bg-[#050505] py-32 md:py-40 overflow-hidden">
+    <section id="testimonials" className="relative w-full bg-[#030304] py-32 md:py-40 overflow-hidden">
 
       {/* Subtle grid texture */}
       <div
@@ -162,17 +186,16 @@ export default function Testimonials() {
 
                     {/* Photo + info */}
                     <div className="flex-shrink-0 flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-3">
-                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/10 p-[2px] overflow-hidden flex-shrink-0">
-                        <img
-                          src={t.photo}
-                          alt={t.name}
-                          className="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-700"
-                        />
+                      <div
+                        className="w-16 h-16 md:w-20 md:h-20 rounded-full border flex items-center justify-center flex-shrink-0 font-bold text-lg md:text-xl"
+                        style={{ borderColor: `${t.accent}55`, background: `${t.accent}18`, color: t.accent }}
+                      >
+                        {t.initials}
                       </div>
                       <div>
                         <p className="font-semibold text-white text-sm">{t.name}</p>
                         <p className="text-xs text-zinc-500 mt-0.5">{t.role}</p>
-                        <p className="text-xs text-[#f35516] font-medium mt-0.5">{t.company}</p>
+                        <p className="text-xs font-medium mt-0.5" style={{ color: t.accent }}>{t.company}</p>
                         {/* Stars */}
                         <div className="flex gap-0.5 mt-2">
                           {Array.from({ length: t.stars }).map((_, i) => (

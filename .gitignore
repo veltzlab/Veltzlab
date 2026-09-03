@@ -24,3 +24,18 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Local agent tooling and generated media workspaces
+.agent/
+.agents/
+.claude/
+.opencode/
+.vscode/
+Frames/
+heroframes/
+bg2.mp4
+newhero.mp4
+openspec/
+integrations/
+public/Frames/
+public/hero-frames/

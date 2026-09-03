@@ -8,27 +8,40 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('/fonts/comfortaa-variable.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 300 700;
+  font-style: normal;
+}
+
 @theme {
   --font-sans: "Dyson Sans Modern", sans-serif;
-  --color-canvas: #050505;
+  --font-secondary: "Comfortaa", sans-serif;
+  --color-canvas: #030304;
   --color-surface: rgba(255, 255, 255, 0.03);
   --color-surface-hover: rgba(255, 255, 255, 0.08);
   --color-border: rgba(255, 255, 255, 0.1);
   --color-accent: #3b82f6; /* Electric Blue / Emerald etc. Let's use pure white for ultimate minimal or a subtle glow */
+  --color-ink: #0a0a0a;
+  --color-brand: #f35516;
+  --color-brand-soft: #ff8a3d;
+  --color-muted: #a1a1aa;
 }
 
 @layer base {
   body {
-    @apply bg-[var(--color-canvas)] text-zinc-400 font-light antialiased selection:bg-white/20 selection:text-white min-h-[100dvh] overflow-x-clip cursor-none;
+    @apply bg-[var(--color-canvas)] text-zinc-400 font-light antialiased selection:bg-white/20 selection:text-white min-h-[100dvh] overflow-x-clip;
+    font-family: var(--font-secondary);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  a, button, [role="button"], input, select, textarea, [data-cursor="pointer"] {
-    @apply cursor-none;
-  }
-
+  /* Dyson Sans Modern stays reserved for headings/display type; Comfortaa
+     (set as the body default above) reads noticeably better at small sizes. */
   h1, h2, h3, h4, h5, h6 {
     @apply text-zinc-100 font-normal tracking-tight;
+    font-family: var(--font-sans);
   }
 }
 
@@ -36,6 +49,67 @@
 @keyframes imagePan {
   from { transform: translateY(0); }
   to   { transform: translateY(calc(-100% + 808px)); }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(18px, -24px, 0) rotate(3deg); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(12px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(12px) rotate(-360deg); }
+}
+
+@keyframes scan {
+  0% { transform: translate3d(-120%, 10%, 0) rotate(-14deg); }
+  100% { transform: translate3d(220%, -10%, 0) rotate(-14deg); }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { opacity: .15; transform: scale(.92); }
+  50% { opacity: .45; transform: scale(1.04); }
+}
+
+@keyframes network-flow {
+  to { stroke-dashoffset: -180; }
+}
+
+@keyframes network-node {
+  0%, 100% { opacity: .38; r: 3; }
+  50% { opacity: 1; r: 5; }
+}
+
+.scan-line { filter: blur(16px); }
+
+.glass-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.012));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.glow-brand { box-shadow: 0 0 60px -12px rgba(243,85,22,.55); }
+.glow-soft { box-shadow: 0 18px 50px -22px rgba(0,0,0,.8); }
+.text-brand-gradient { background: linear-gradient(120deg, #ff8a3d 0%, #f35516 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.dot-grid { background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px); background-size: 30px 30px; }
+.blueprint-grid { background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size: 32px 32px; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* The diagnostic must remain legible if the browser delays motion hydration. */
+.diagnostic-page { color: #fff; }
+.diagnostic-page [style*="opacity: 0"] { opacity: 1 !important; transform: none !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ambient-drift { animation: drift 9s ease-in-out infinite; }
+  .ambient-drift-slow { animation: drift 13s ease-in-out -4s infinite reverse; }
+  .orbit-dot { animation: orbit 8s linear infinite; }
+  .scan-line { animation: scan 5s ease-in-out infinite; }
+  .pulse-ring { animation: pulse-ring 5s ease-in-out infinite; }
+  .network-line { animation: network-flow 13s linear infinite; }
+  .network-line-slow { animation: network-flow 19s linear infinite reverse; }
+  .network-node { animation: network-node 3.8s ease-in-out infinite; }
 }
 
 /* Utilities for "Liquid Glass" and Double-Bezel */
@@ -49,7 +123,7 @@
   }
 }
 
-/* ── Range slider thumb — Playground */
+/* ── Range slider thumb */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
@@ -57,7 +131,6 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   background: #fff;
   border: 2px solid #f35516;
-  cursor: none;
   margin-top: -6px;
   box-shadow: 0 0 8px rgba(243,85,22,0.5);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -76,7 +149,5 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   background: #fff;
   border: 2px solid #f35516;
-  cursor: none;
   box-shadow: 0 0 8px rgba(243,85,22,0.5);
 }
-
