@@ -78,7 +78,7 @@ export default function DiagnosticApp({
   const [answers, setAnswers] = useState<Answers>({});
   const [otherAnswers, setOtherAnswers] = useState<Record<string, string>>({});
   const [lead, setLead] = useState<Lead>(emptyLead);
-  const [dir, setDir] = useState(1);
+  const [, setDir] = useState(1);
   const [errors, setErrors] = useState<Partial<Record<keyof Lead, string>>>({});
 
   /* ---------------- persistence ---------------- */
