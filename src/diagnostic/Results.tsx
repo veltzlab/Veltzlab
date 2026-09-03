@@ -29,7 +29,7 @@ export default function Results({
 }) {
   const { overall, level, pillars, priorities, strengths, modules, impact } =
     result;
-  const whatsappText = encodeURIComponent(`OlÃ¡, Veltz. ConcluÃ­ o diagnÃ³stico${lead?.empresa ? ` da ${lead.empresa}` : ""} e quero entender os prÃ³ximos passos.${lead?.prioridades?.length ? ` Minhas prioridades: ${lead.prioridades.join(", ")}.` : ""}`);
+  const whatsappText = encodeURIComponent(`Olá, Veltz. Concluí o diagnóstico${lead?.empresa ? ` da ${lead.empresa}` : ""} e quero entender os próximos passos.${lead?.prioridades?.length ? ` Minhas prioridades: ${lead.prioridades.join(", ")}.` : ""}`);
 
   const levelIndex = LEVELS.findIndex((l) => l.key === level.key);
 
@@ -43,7 +43,7 @@ export default function Results({
       {/* ---------------- Header ---------------- */}
       <motion.div variants={fadeUp} className="mb-10 text-center">
         <span className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-brand">
-          DiagnÃ³stico ConcluÃ­do
+          Diagnóstico Concluído
         </span>
         <h1 className="mt-6 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
           {lead?.nome ? `${lead.nome.split(" ")[0]}, ` : ""}
@@ -63,7 +63,7 @@ export default function Results({
         className="glass-card mb-5 grid gap-8 rounded-2xl p-7 md:grid-cols-[auto_1fr] md:items-center md:gap-10 md:p-10"
       >
         <div className="flex flex-col items-center">
-          <Gauge value={overall} label="Ãndice de Maturidade Operacional" />
+          <Gauge value={overall} label="Índice de Maturidade Operacional" />
           <span className="mt-4 rounded-full bg-white/5 px-4 py-1.5 font-display text-sm font-semibold text-white ring-1 ring-white/10">
             {level.name}
           </span>
@@ -95,7 +95,7 @@ export default function Results({
                         : "text-muted/60"
                     }`}
                   >
-                    {l.name.replace("OperaÃ§Ã£o ", "")}
+                    {l.name.replace("Operação ", "")}
                   </span>
                 </div>
               ))}
@@ -108,7 +108,7 @@ export default function Results({
       <motion.div variants={fadeUp} className="mb-5 grid gap-5 lg:grid-cols-2">
         <div className="glass-card rounded-2xl p-7">
           <h2 className="mb-1 font-display text-lg font-semibold text-white">
-            Mapa da operaÃ§Ã£o
+            Mapa da operação
           </h2>
           <p className="mb-4 text-sm text-muted">
             Desempenho por pilar avaliado.
@@ -120,10 +120,10 @@ export default function Results({
 
         <div className="glass-card rounded-2xl p-7">
           <h2 className="mb-1 font-display text-lg font-semibold text-white">
-            PontuaÃ§Ã£o por pilar
+            Pontuação por pilar
           </h2>
           <p className="mb-6 text-sm text-muted">
-            Onde a operaÃ§Ã£o estÃ¡ forte e onde ela trava.
+            Onde a operação está forte e onde ela trava.
           </p>
           <div className="space-y-4">
             {pillars.map((p, i) => (
@@ -139,17 +139,17 @@ export default function Results({
           {
             icon: Clock,
             value: `${impact.horas}h`,
-            label: "por mÃªs recuperadas em tarefas manuais",
+            label: "por mês recuperadas em tarefas manuais",
           },
           {
             icon: TrendingUp,
             value: `+${impact.conversao}%`,
-            label: "de potencial em conversÃ£o comercial",
+            label: "de potencial em conversão comercial",
           },
           {
             icon: Repeat,
             value: `-${impact.retrabalho}%`,
-            label: "de retrabalho eliminÃ¡vel com integraÃ§Ã£o",
+            label: "de retrabalho eliminável com integração",
           },
         ].map((s) => {
           const Icon = s.icon;
@@ -172,7 +172,7 @@ export default function Results({
         variants={fadeUp}
         className="mb-10 text-center text-[11px] text-muted/60"
       >
-        Estimativas calculadas a partir das suas respostas. NÃºmeros precisos sÃ£o
+        Estimativas calculadas a partir das suas respostas. Números precisos são
         definidos na etapa de Descoberta.
       </motion.p>
 
@@ -187,7 +187,7 @@ export default function Results({
               Prioridades recomendadas
             </h2>
             <p className="text-sm text-muted">
-              Os trÃªs pontos com maior ganho imediato.
+              Os três pontos com maior ganho imediato.
             </p>
           </div>
         </div>
@@ -261,7 +261,7 @@ export default function Results({
                 key={s.pillar.id}
                 className="rounded-full border border-emerald-400/25 bg-emerald-400/8 px-3 py-1 text-xs text-emerald-300"
               >
-                {s.pillar.short} Â· {s.score}
+                {s.pillar.short} · {s.score}
               </span>
             ))}
             <span className="text-xs text-muted">
@@ -277,7 +277,7 @@ export default function Results({
           Arquitetura recomendada
         </h2>
         <p className="mt-1 text-sm text-muted">
-          Apenas a tecnologia necessÃ¡ria para a sua operaÃ§Ã£o â€” nada alÃ©m disso.
+          Apenas a tecnologia necessária para a sua operação — nada além disso.
         </p>
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {modules.map((m) => {
@@ -312,12 +312,12 @@ export default function Results({
         <div className="relative">
           <VeltzLogo className="h-8 w-auto" />
           <h2 className="mt-4 font-display text-2xl font-semibold leading-tight text-white sm:text-3xl">
-            Este Ã© o ponto de partida.
+            Este é o ponto de partida.
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-            O prÃ³ximo passo do VELTZ OSâ„¢ Ã© a{" "}
-            <span className="text-white">Descoberta</span>: mapear sua operaÃ§Ã£o
-            em profundidade e transformar este diagnÃ³stico em um blueprint de
+            O próximo passo do VELTZ OS™ é a{" "}
+            <span className="text-white">Descoberta</span>: mapear sua operação
+            em profundidade e transformar este diagnóstico em um blueprint de
             arquitetura operacional.
           </p>
 
@@ -328,7 +328,7 @@ export default function Results({
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-brand-soft to-brand px-7 py-3.5 text-sm font-semibold text-ink glow-brand transition-transform hover:scale-[1.03]"
             >
-              Quero conversar sobre este diagnÃ³stico
+              Quero conversar sobre este diagnóstico
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <button
@@ -346,14 +346,14 @@ export default function Results({
               className="inline-flex items-center gap-1.5 transition-colors hover:text-white"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              Refazer diagnÃ³stico
+              Refazer diagnóstico
             </button>
             <button
               onClick={onBackToDeck}
               className="inline-flex items-center gap-1.5 transition-colors hover:text-white"
             >
               <PresentationIcon className="h-3.5 w-3.5" />
-              Voltar Ã  apresentaÃ§Ã£o
+              Voltar à apresentação
             </button>
           </div>
         </div>

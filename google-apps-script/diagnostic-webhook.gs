@@ -1,5 +1,5 @@
 const SPREADSHEET_ID = "1u85-EvKcyPf6VW6hEfBq9wFBoIb1uMAWh0_pCztyQe8";
-const SHEET_NAME = "Diagnósticos";
+const SHEET_NAME = "Diagn?sticos";
 
 function doGet() {
   return jsonResponse({ ok: true, service: "veltz-diagnostic-webhook" });

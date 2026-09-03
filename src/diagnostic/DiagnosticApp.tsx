@@ -56,9 +56,9 @@ const emptyLead: Lead = {
   prioridades: [],
 };
 
-const CANAIS = ["IndicaÃ§Ã£o", "Google", "Redes sociais", "AnÃºncios pagos", "Eventos / parcerias", "Outbound", "Outro"];
-const FERRAMENTAS = ["WhatsApp", "Planilhas", "CRM", "AutomaÃ§Ã£o", "Dashboard / BI", "ERP", "Outro"];
-const PRIORIDADES = ["Gerar mais oportunidades", "Organizar atendimento", "Aumentar conversÃ£o", "Automatizar tarefas", "Integrar ferramentas", "Ter visibilidade dos dados"];
+const CANAIS = ["Indicação", "Google", "Redes sociais", "Anúncios pagos", "Eventos / parcerias", "Outbound", "Outro"];
+const FERRAMENTAS = ["WhatsApp", "Planilhas", "CRM", "Automação", "Dashboard / BI", "ERP", "Outro"];
+const PRIORIDADES = ["Gerar mais oportunidades", "Organizar atendimento", "Aumentar conversão", "Automatizar tarefas", "Integrar ferramentas", "Ter visibilidade dos dados"];
 
 export default function DiagnosticApp({
   onBackToDeck,
@@ -161,7 +161,7 @@ export default function DiagnosticApp({
       submittedAt: new Date().toISOString(),
       lead: {
         ...lead,
-        // O apÃ³strofo garante que o Google Sheets trate o DDI (+55) como texto.
+        // O apóstrofo garante que o Google Sheets trate o DDI (+55) como texto.
         whatsapp: lead.whatsapp.trim()
           ? `'${`${lead.ddi.trim()} ${lead.whatsapp.trim()}`.trim()}`
           : "",
@@ -186,7 +186,7 @@ export default function DiagnosticApp({
         body: JSON.stringify(payload),
       });
     } catch {
-      // O resultado continua disponÃ­vel mesmo se o registro externo falhar.
+      // O resultado continua disponível mesmo se o registro externo falhar.
     }
   };
 
@@ -196,7 +196,7 @@ export default function DiagnosticApp({
     if (!lead.nome.trim()) next.nome = "Informe seu nome";
     if (!lead.empresa.trim()) next.empresa = "Informe a empresa";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email))
-      next.email = "Informe um e-mail vÃ¡lido";
+      next.email = "Informe um e-mail válido";
     setErrors(next);
     if (Object.keys(next).length === 0) {
       void sendDiagnosticToSheet();
@@ -229,12 +229,12 @@ export default function DiagnosticApp({
           <button
             onClick={onBackToDeck}
             className="flex items-center gap-2.5"
-            aria-label="Voltar Ã  apresentaÃ§Ã£o"
+            aria-label="Voltar à apresentação"
           >
             <VeltzLogo className="h-7 w-auto" />
           </button>
           <span className="text-[11px] uppercase tracking-[0.22em] text-muted">
-            DiagnÃ³stico
+            Diagnóstico
           </span>
         </div>
       </header>
@@ -256,14 +256,14 @@ export default function DiagnosticApp({
                 className="inline-flex items-center gap-2 self-start rounded-full border border-brand/30 bg-brand/10 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-brand"
               >
                 <Sparkles className="h-3 w-3" />
-                Etapa 01 Â· Alinhar
+                Etapa 01 · Alinhar
               </motion.span>
 
               <motion.h1
                 variants={fadeUp}
                 className="mt-7 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
               >
-                DiagnÃ³stico de{" "}
+                Diagnóstico de{" "}
                 <span className="text-brand-gradient">
                   Maturidade Operacional
                 </span>
@@ -274,7 +274,7 @@ export default function DiagnosticApp({
                 className="mt-6 max-w-xl text-base leading-relaxed text-muted md:text-lg"
               >
                 Responda 18 perguntas sobre como sua empresa opera hoje. Ao
-                final vocÃª recebe um retrato completo da sua operaÃ§Ã£o, as
+                final você recebe um retrato completo da sua operação, as
                 prioridades de maior impacto e a arquitetura recomendada.
               </motion.p>
 
@@ -283,7 +283,7 @@ export default function DiagnosticApp({
                 className="mt-10 grid gap-3 sm:grid-cols-3"
               >
                 {[
-                  { icon: Clock, t: "4 minutos", s: "Tempo mÃ©dio" },
+                  { icon: Clock, t: "4 minutos", s: "Tempo médio" },
                   { icon: ListChecks, t: "18 perguntas", s: "6 pilares" },
                   { icon: ShieldCheck, t: "Sem compromisso", s: "Gratuito" },
                 ].map((i) => {
@@ -325,7 +325,7 @@ export default function DiagnosticApp({
                   }}
                   className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-brand-soft to-brand px-8 py-4 text-base font-semibold text-ink glow-brand transition-transform hover:scale-[1.03]"
                 >
-                  Iniciar DiagnÃ³stico
+                  Iniciar Diagnóstico
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </button>
                 {Object.keys(answers).length > 0 && (
@@ -433,7 +433,7 @@ export default function DiagnosticApp({
                   Voltar
                 </button>
                 <span className="hidden text-[11px] text-muted/60 sm:block">
-                  Dica: use as teclas 1â€“4 para responder
+                  Dica: use as teclas 1–4 para responder
                 </span>
               </div>
             </motion.section>
@@ -451,15 +451,15 @@ export default function DiagnosticApp({
             >
               <span className="inline-flex items-center gap-2 self-start rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
                 <Check className="h-3 w-3" />
-                Respostas concluÃ­das
+                Respostas concluídas
               </span>
 
               <h2 className="mt-6 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-                Seu diagnÃ³stico estÃ¡ pronto.
+                Seu diagnóstico está pronto.
               </h2>
               <p className="mt-3 text-base text-muted">
                 Preencha os dados para visualizar o resultado completo e receber
-                uma cÃ³pia da anÃ¡lise.
+                uma cópia da análise.
               </p>
 
               <form onSubmit={submitLead} className="mt-8 space-y-4">
@@ -517,12 +517,12 @@ export default function DiagnosticApp({
 
                 <div className="space-y-5 border-t border-white/8 pt-6">
                   <div>
-                    <p className="text-sm font-medium text-white">Para aprofundar a leitura da sua operaÃ§Ã£o</p>
-                    <p className="mt-1 text-xs leading-relaxed text-muted">Nestas perguntas, vocÃª pode selecionar todas as opÃ§Ãµes que se aplicam.</p>
+                    <p className="text-sm font-medium text-white">Para aprofundar a leitura da sua operação</p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted">Nestas perguntas, você pode selecionar todas as opções que se aplicam.</p>
                   </div>
                   <MultiSelect label="Quais canais hoje geram oportunidades?" options={CANAIS} value={lead.canais} onChange={(v) => field("canais", v)} />
-                  <MultiSelect label="Quais ferramentas fazem parte da operaÃ§Ã£o?" options={FERRAMENTAS} value={lead.ferramentas} onChange={(v) => field("ferramentas", v)} />
-                  <MultiSelect label="Quais pontos merecem atenÃ§Ã£o primeiro?" options={PRIORIDADES} value={lead.prioridades} onChange={(v) => field("prioridades", v)} />
+                  <MultiSelect label="Quais ferramentas fazem parte da operação?" options={FERRAMENTAS} value={lead.ferramentas} onChange={(v) => field("ferramentas", v)} />
+                  <MultiSelect label="Quais pontos merecem atenção primeiro?" options={PRIORIDADES} value={lead.prioridades} onChange={(v) => field("prioridades", v)} />
                 </div>
 
                 <button
@@ -674,7 +674,7 @@ function MultiSelect({
       <div className="flex flex-wrap gap-2">
         {options.map((option) => {
           const selected = value.includes(option);
-          return <button key={option} type="button" onClick={() => toggle(option)} aria-pressed={selected} className={`rounded-full border px-3 py-2 text-xs transition-colors ${selected ? "border-brand bg-brand/15 text-white" : "border-white/10 bg-white/[.02] text-zinc-400 hover:border-brand/45 hover:text-white"}`}><span className="mr-1.5 text-brand">{selected ? "âœ“" : "+"}</span>{option}</button>;
+          return <button key={option} type="button" onClick={() => toggle(option)} aria-pressed={selected} className={`rounded-full border px-3 py-2 text-xs transition-colors ${selected ? "border-brand bg-brand/15 text-white" : "border-white/10 bg-white/[.02] text-zinc-400 hover:border-brand/45 hover:text-white"}`}><span className="mr-1.5 text-brand">{selected ? "✓" : "+"}</span>{option}</button>;
         })}
       </div>
     </fieldset>

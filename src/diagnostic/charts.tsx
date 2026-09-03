@@ -45,7 +45,7 @@ export function Gauge({
   const r = 86;
   const cx = 100;
   const cy = 100;
-  // 270Â° arc (from 135Â° to 405Â°)
+  // 270° arc (from 135° to 405°)
   const circumference = 2 * Math.PI * r;
   const arcFraction = 0.75;
   const arcLength = circumference * arcFraction;

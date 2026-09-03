@@ -243,7 +243,7 @@ export function Wordmark({ className }: { className?: string }) {
     <span className={cn("font-display font-semibold tracking-tight", className)}>
       VELTZ{" "}
       <span className="text-brand-gradient">
-        OS<sup className="text-[0.5em] align-super">â„¢</sup>
+        OS<sup className="text-[0.5em] align-super">™</sup>
       </span>
     </span>
   );
