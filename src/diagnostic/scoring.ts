@@ -9,7 +9,7 @@ import {
   type PillarId,
 } from "./data";
 
-export type Answers = Record<string, number>; // questionId -> selected option score
+export type Answers = Record<string, number | string[]>;
 
 export type PillarResult = {
   pillar: Pillar;
@@ -54,9 +54,12 @@ export function getLevel(score: number): Level {
 export function computeResult(answers: Answers): DiagnosticResult {
   // --- per pillar score -------------------------------------------------
   const pillarResults: PillarResult[] = PILLARS.map((pillar) => {
-    const qs = QUESTIONS.filter((q) => q.pillar === pillar.id);
+    const qs = QUESTIONS.filter((q) => q.pillar === pillar.id && !q.multiple);
     const max = qs.length * 3;
-    const sum = qs.reduce((acc, q) => acc + (answers[q.id] ?? 0), 0);
+    const sum = qs.reduce((acc, q) => {
+      const answer = answers[q.id];
+      return acc + (typeof answer === "number" ? answer : 0);
+    }, 0);
     const score = max === 0 ? 0 : Math.round((sum / max) * 100);
     const band = bandOf(score);
     return {
@@ -105,7 +108,10 @@ export function computeResult(answers: Answers): DiagnosticResult {
     retrabalho: Math.round(clamp(15 + ((manualIndex + dataIndex) / 2) * 65, 10, 80)),
   };
 
-  const answered = QUESTIONS.filter((q) => answers[q.id] !== undefined).length;
+  const answered = QUESTIONS.filter((q) => {
+    const answer = answers[q.id];
+    return Array.isArray(answer) ? answer.length > 0 : answer !== undefined;
+  }).length;
 
   return {
     overall,

@@ -96,24 +96,50 @@ export default function DiagnosticApp({
 
   const question = QUESTIONS[qIndex];
   const pillar = question ? PILLAR_MAP[question.pillar] : null;
+  const currentQuestionAnswer = question ? answers[question.id] : undefined;
+  const selectedMultipleAnswers: string[] = Array.isArray(currentQuestionAnswer)
+    ? currentQuestionAnswer
+    : [];
   const progress = (qIndex / QUESTIONS.length) * 100;
   const result = useMemo(() => computeResult(answers), [answers]);
 
   /* ---------------- navigation ---------------- */
+  const goToNextQuestion = useCallback(() => {
+    setDir(1);
+    if (qIndex < QUESTIONS.length - 1) {
+      setQIndex((index) => index + 1);
+    } else {
+      setPhase("lead");
+    }
+  }, [qIndex]);
+
   const answer = useCallback(
     (score: number) => {
       setAnswers((prev) => ({ ...prev, [question.id]: score }));
-      setDir(1);
-      window.setTimeout(() => {
-        if (qIndex < QUESTIONS.length - 1) {
-          setQIndex((i) => i + 1);
-        } else {
-          setPhase("lead");
-        }
-      }, 260);
+      window.setTimeout(goToNextQuestion, 260);
     },
-    [qIndex, question],
+    [goToNextQuestion, question],
   );
+
+  const toggleMultipleAnswer = useCallback(
+    (label: string) => {
+      setAnswers((prev) => {
+        const currentAnswer = prev[question.id];
+        const selected: string[] = Array.isArray(currentAnswer) ? currentAnswer : [];
+        return {
+          ...prev,
+          [question.id]: selected.includes(label)
+            ? selected.filter((item) => item !== label)
+            : [...selected, label],
+        };
+      });
+    },
+    [question],
+  );
+
+  const continueMultipleAnswer = useCallback(() => {
+    if (selectedMultipleAnswers.length > 0) goToNextQuestion();
+  }, [goToNextQuestion, selectedMultipleAnswers]);
 
   const back = useCallback(() => {
     setDir(-1);
@@ -127,7 +153,10 @@ export default function DiagnosticApp({
     const onKey = (e: KeyboardEvent) => {
       const n = Number(e.key);
       if (n >= 1 && n <= question.options.length) {
-        answer(question.options[n - 1].score);
+        if (question.multiple) toggleMultipleAnswer(question.options[n - 1].label);
+        else answer(question.options[n - 1].score);
+      } else if (question.multiple && e.key === "Enter") {
+        continueMultipleAnswer();
       } else if (e.key === "Backspace" || e.key === "ArrowLeft") {
         e.preventDefault();
         back();
@@ -135,7 +164,7 @@ export default function DiagnosticApp({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase, question, answer, back]);
+  }, [phase, question, answer, back, continueMultipleAnswer, toggleMultipleAnswer]);
 
   const restart = () => {
     setAnswers({});
@@ -384,13 +413,21 @@ export default function DiagnosticApp({
                     {question.text}
                   </h2>
 
+                  {question.multiple && (
+                    <p className="mt-3 text-sm text-muted">
+                      Selecione todas as opções que se aplicam à sua operação.
+                    </p>
+                  )}
+
                   <div className="mt-8 space-y-2.5">
                     {question.options.map((opt, i) => {
-                      const selected = answers[question.id] === opt.score;
+                      const selected = question.multiple
+                        ? selectedMultipleAnswers.includes(opt.label)
+                        : answers[question.id] === opt.score;
                       return (
                         <button
                           key={opt.label}
-                          onClick={() => answer(opt.score)}
+                          onClick={() => question.multiple ? toggleMultipleAnswer(opt.label) : answer(opt.score)}
                           className={`group flex w-full items-center gap-4 rounded-2xl border px-5 py-4 text-left transition-all duration-200 ${
                             selected
                               ? "border-brand bg-brand/10"
@@ -421,6 +458,18 @@ export default function DiagnosticApp({
                       );
                     })}
                   </div>
+
+                  {question.multiple && (
+                    <button
+                      type="button"
+                      onClick={continueMultipleAnswer}
+                      disabled={selectedMultipleAnswers.length === 0}
+                      className="group mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-brand-soft to-brand px-6 py-4 text-base font-semibold text-ink transition-transform enabled:hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Continuar
+                      <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                    </button>
+                  )}
                 </motion.div>
               </AnimatePresence>
 

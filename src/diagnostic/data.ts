@@ -32,6 +32,7 @@ export type Question = {
   pillar: PillarId;
   text: string;
   options: Option[];
+  multiple?: boolean;
 };
 
 export type Pillar = {
@@ -214,12 +215,15 @@ export const QUESTIONS: Question[] = [
   {
     id: "mk1",
     pillar: "marketing",
-    text: "Como os clientes chegam até a sua empresa hoje?",
+    text: "Quais canais geram oportunidades para a sua empresa hoje?",
+    multiple: true,
     options: [
-      { label: "Indicação e contatos pessoais, sem previsibilidade", score: 0 },
-      { label: "Anúncios pontuais, sem constância", score: 1 },
-      { label: "Campanhas ativas, mas sem medir a origem com precisão", score: 2 },
-      { label: "Canais estruturados e origem rastreada em todo o funil", score: 3 },
+      { label: "Indicação e contatos pessoais", score: 0 },
+      { label: "Google e busca orgânica", score: 0 },
+      { label: "Redes sociais", score: 0 },
+      { label: "Anúncios pagos", score: 0 },
+      { label: "Eventos e parcerias", score: 0 },
+      { label: "Prospecção ativa (outbound)", score: 0 },
     ],
   },
   {
