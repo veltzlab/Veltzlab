@@ -41,7 +41,7 @@ export type Lead = {
 
 type Phase = "intro" | "quiz" | "lead" | "results";
 
-const STORAGE_KEY = "veltz-os-diagnostico";
+const STORAGE_KEY = "veltz-os-diagnostico-v2";
 
 const emptyLead: Lead = {
   nome: "",
