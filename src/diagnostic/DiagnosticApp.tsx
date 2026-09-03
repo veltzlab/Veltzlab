@@ -33,10 +33,14 @@ export type Lead = {
   ddi: string;
   whatsapp: string;
   segmento: string;
+  outroSegmento: string;
   porte: string;
   canais: string[];
+  outroCanal: string;
   ferramentas: string[];
+  outraFerramenta: string;
   prioridades: string[];
+  outraPrioridade: string;
 };
 
 type Phase = "intro" | "quiz" | "lead" | "results";
@@ -50,15 +54,19 @@ const emptyLead: Lead = {
   ddi: "+55",
   whatsapp: "",
   segmento: "",
+  outroSegmento: "",
   porte: "",
   canais: [],
+  outroCanal: "",
   ferramentas: [],
+  outraFerramenta: "",
   prioridades: [],
+  outraPrioridade: "",
 };
 
 const CANAIS = ["Indicação", "Google", "Redes sociais", "Anúncios pagos", "Eventos / parcerias", "Outbound", "Outro"];
 const FERRAMENTAS = ["WhatsApp", "Planilhas", "CRM", "Automação", "Dashboard / BI", "ERP", "Outro"];
-const PRIORIDADES = ["Gerar mais oportunidades", "Organizar atendimento", "Aumentar conversão", "Automatizar tarefas", "Integrar ferramentas", "Ter visibilidade dos dados"];
+const PRIORIDADES = ["Gerar mais oportunidades", "Organizar atendimento", "Aumentar conversão", "Automatizar tarefas", "Integrar ferramentas", "Ter visibilidade dos dados", "Outro"];
 
 export default function DiagnosticApp({
   onBackToDeck,
@@ -126,10 +134,14 @@ export default function DiagnosticApp({
       setAnswers((prev) => {
         const currentAnswer = prev[question.id];
         const selected: string[] = Array.isArray(currentAnswer) ? currentAnswer : [];
+        const isOther = label === "Outro";
+        const hasSelection = isOther
+          ? selected.some((item) => item === "Outro" || item.startsWith("Outro: "))
+          : selected.includes(label);
         return {
           ...prev,
-          [question.id]: selected.includes(label)
-            ? selected.filter((item) => item !== label)
+          [question.id]: hasSelection
+            ? selected.filter((item) => isOther ? item !== "Outro" && !item.startsWith("Outro: ") : item !== label)
             : [...selected, label],
         };
       });
@@ -140,6 +152,24 @@ export default function DiagnosticApp({
   const continueMultipleAnswer = useCallback(() => {
     if (selectedMultipleAnswers.length > 0) goToNextQuestion();
   }, [goToNextQuestion, selectedMultipleAnswers]);
+
+  const setOtherMultipleAnswer = useCallback(
+    (value: string) => {
+      setAnswers((prev) => {
+        const currentAnswer = prev[question.id];
+        const selected: string[] = Array.isArray(currentAnswer) ? currentAnswer : [];
+        return {
+          ...prev,
+          [question.id]: selected.map((item) =>
+            item === "Outro" || item.startsWith("Outro: ")
+              ? value.trim() ? `Outro: ${value}` : "Outro"
+              : item,
+          ),
+        };
+      });
+    },
+    [question],
+  );
 
   const back = useCallback(() => {
     setDir(-1);
@@ -190,6 +220,18 @@ export default function DiagnosticApp({
       submittedAt: new Date().toISOString(),
       lead: {
         ...lead,
+        segmento: lead.segmento === "Outro" && lead.outroSegmento.trim()
+          ? `Outro: ${lead.outroSegmento.trim()}`
+          : lead.segmento,
+        canais: lead.outroCanal.trim()
+          ? lead.canais.map((item) => item === "Outro" ? `Outro: ${lead.outroCanal.trim()}` : item)
+          : lead.canais,
+        ferramentas: lead.outraFerramenta.trim()
+          ? lead.ferramentas.map((item) => item === "Outro" ? `Outro: ${lead.outraFerramenta.trim()}` : item)
+          : lead.ferramentas,
+        prioridades: lead.outraPrioridade.trim()
+          ? lead.prioridades.map((item) => item === "Outro" ? `Outro: ${lead.outraPrioridade.trim()}` : item)
+          : lead.prioridades,
         // O apóstrofo garante que o Google Sheets trate o DDI (+55) como texto.
         whatsapp: lead.whatsapp.trim()
           ? `'${`${lead.ddi.trim()} ${lead.whatsapp.trim()}`.trim()}`
@@ -422,7 +464,9 @@ export default function DiagnosticApp({
                   <div className="mt-8 space-y-2.5">
                     {question.options.map((opt, i) => {
                       const selected = question.multiple
-                        ? selectedMultipleAnswers.includes(opt.label)
+                        ? opt.label === "Outro"
+                          ? selectedMultipleAnswers.some((item) => item === "Outro" || item.startsWith("Outro: "))
+                          : selectedMultipleAnswers.includes(opt.label)
                         : answers[question.id] === opt.score;
                       return (
                         <button
@@ -460,6 +504,21 @@ export default function DiagnosticApp({
                   </div>
 
                   {question.multiple && (
+                    <>
+                    {selectedMultipleAnswers.some((item) => item === "Outro" || item.startsWith("Outro: ")) && (
+                      <div className="mt-3">
+                        <label className="block text-xs font-medium text-muted" htmlFor="canal-outro">
+                          Qual outro canal?
+                        </label>
+                        <input
+                          id="canal-outro"
+                          value={selectedMultipleAnswers.find((item) => item.startsWith("Outro: "))?.replace("Outro: ", "") ?? ""}
+                          onChange={(event) => setOtherMultipleAnswer(event.target.value)}
+                          placeholder="Descreva o canal"
+                          className="mt-1.5 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-muted/40 focus:border-brand/60 focus:bg-white/[0.05]"
+                        />
+                      </div>
+                    )}
                     <button
                       type="button"
                       onClick={continueMultipleAnswer}
@@ -469,6 +528,7 @@ export default function DiagnosticApp({
                       Continuar
                       <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                     </button>
+                    </>
                   )}
                 </motion.div>
               </AnimatePresence>
@@ -550,12 +610,22 @@ export default function DiagnosticApp({
                       optional
                     />
                   </div>
-                  <Select
-                    label="Segmento"
-                    value={lead.segmento}
-                    onChange={(v) => field("segmento", v)}
-                    options={SEGMENTOS}
-                  />
+                  <div className="space-y-2">
+                    <Select
+                      label="Segmento"
+                      value={lead.segmento}
+                      onChange={(v) => field("segmento", v)}
+                      options={SEGMENTOS}
+                    />
+                    {lead.segmento === "Outro" && (
+                      <Input
+                        label="Qual segmento?"
+                        value={lead.outroSegmento}
+                        onChange={(v) => field("outroSegmento", v)}
+                        placeholder="Descreva o segmento"
+                      />
+                    )}
+                  </div>
                   <Select
                     label="Porte"
                     value={lead.porte}
@@ -569,9 +639,9 @@ export default function DiagnosticApp({
                     <p className="text-sm font-medium text-white">Para aprofundar a leitura da sua operação</p>
                     <p className="mt-1 text-xs leading-relaxed text-muted">Nestas perguntas, você pode selecionar todas as opções que se aplicam.</p>
                   </div>
-                  <MultiSelect label="Quais canais hoje geram oportunidades?" options={CANAIS} value={lead.canais} onChange={(v) => field("canais", v)} />
-                  <MultiSelect label="Quais ferramentas fazem parte da operação?" options={FERRAMENTAS} value={lead.ferramentas} onChange={(v) => field("ferramentas", v)} />
-                  <MultiSelect label="Quais pontos merecem atenção primeiro?" options={PRIORIDADES} value={lead.prioridades} onChange={(v) => field("prioridades", v)} />
+                  <MultiSelect label="Quais canais hoje geram oportunidades?" options={CANAIS} value={lead.canais} onChange={(v) => field("canais", v)} otherValue={lead.outroCanal} onOtherChange={(v) => field("outroCanal", v)} />
+                  <MultiSelect label="Quais ferramentas fazem parte da operação?" options={FERRAMENTAS} value={lead.ferramentas} onChange={(v) => field("ferramentas", v)} otherValue={lead.outraFerramenta} onOtherChange={(v) => field("outraFerramenta", v)} />
+                  <MultiSelect label="Quais pontos merecem atenção primeiro?" options={PRIORIDADES} value={lead.prioridades} onChange={(v) => field("prioridades", v)} otherValue={lead.outraPrioridade} onOtherChange={(v) => field("outraPrioridade", v)} />
                 </div>
 
                 <button
@@ -710,11 +780,15 @@ function MultiSelect({
   options,
   value,
   onChange,
+  otherValue,
+  onOtherChange,
 }: {
   label: string;
   options: string[];
   value: string[];
   onChange: (v: string[]) => void;
+  otherValue: string;
+  onOtherChange: (v: string) => void;
 }) {
   const toggle = (option: string) => onChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option]);
   return (
@@ -726,6 +800,20 @@ function MultiSelect({
           return <button key={option} type="button" onClick={() => toggle(option)} aria-pressed={selected} className={`rounded-full border px-3 py-2 text-xs transition-colors ${selected ? "border-brand bg-brand/15 text-white" : "border-white/10 bg-white/[.02] text-zinc-400 hover:border-brand/45 hover:text-white"}`}><span className="mr-1.5 text-brand">{selected ? "✓" : "+"}</span>{option}</button>;
         })}
       </div>
+      {value.includes("Outro") && (
+        <div className="mt-3">
+          <label className="block text-xs font-medium text-muted" htmlFor={`${label}-outro`}>
+            Qual outro?
+          </label>
+          <input
+            id={`${label}-outro`}
+            value={otherValue}
+            onChange={(event) => onOtherChange(event.target.value)}
+            placeholder="Descreva aqui"
+            className="mt-1.5 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-muted/40 focus:border-brand/60 focus:bg-white/[0.05]"
+          />
+        </div>
+      )}
     </fieldset>
   );
 }

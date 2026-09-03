@@ -224,6 +224,7 @@ export const QUESTIONS: Question[] = [
       { label: "Anúncios pagos", score: 0 },
       { label: "Eventos e parcerias", score: 0 },
       { label: "Prospecção ativa (outbound)", score: 0 },
+      { label: "Outro", score: 0 },
     ],
   },
   {
