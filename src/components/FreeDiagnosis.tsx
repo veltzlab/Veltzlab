@@ -20,7 +20,7 @@ export default function FreeDiagnosis() {
             <h2 className="mt-5 text-4xl font-bold leading-[.95] tracking-tighter text-white md:text-6xl">Onde sua operação está <span className="text-[#f35516]">travando?</span></h2>
             <p className="mt-6 max-w-[42ch] text-base leading-relaxed text-zinc-400">Responda algumas perguntas sobre sua estrutura atual e receba uma primeira análise dos pontos que podem estar limitando seu crescimento.</p>
             <p className="mt-7 text-sm font-semibold text-zinc-300">Leva poucos minutos.</p>
-            <a href="#/diagnostico" className="mt-5 inline-flex rounded-full bg-[#f35516] px-7 py-4 text-sm font-bold text-white shadow-[0_0_28px_-8px_#f35516] transition-transform hover:scale-105">Começar diagnóstico gratuito</a>
+            <a href="/diagnostico" className="mt-5 inline-flex rounded-full bg-[#f35516] px-7 py-4 text-sm font-bold text-white shadow-[0_0_28px_-8px_#f35516] transition-transform hover:scale-105">Começar diagnóstico gratuito</a>
             <p className="mt-4 max-w-[45ch] text-xs leading-relaxed text-zinc-500">O diagnóstico inicial é baseado nas informações fornecidas e não substitui uma análise aprofundada da operação.</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 22 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: .65, delay: .1 }}>

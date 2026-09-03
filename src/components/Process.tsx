@@ -26,7 +26,7 @@ export default function Process() {
               <p className="mt-3 text-sm leading-relaxed text-zinc-400">{step.description}</p>
               {step.note && <p className="mt-5 border-l-2 border-[#f35516] pl-3 text-sm font-semibold leading-relaxed text-white">{step.note}</p>}
               {step.detail && <p className="mt-5 text-xs leading-relaxed text-zinc-500">{step.detail}</p>}
-              {index === 0 && <a href="#/diagnostico" className="mt-auto inline-flex w-fit rounded-full bg-white px-4 py-2.5 text-xs font-bold text-black transition-transform hover:scale-105">Fazer diagnóstico gratuito</a>}
+              {index === 0 && <a href="/diagnostico" className="mt-auto inline-flex w-fit rounded-full bg-white px-4 py-2.5 text-xs font-bold text-black transition-transform hover:scale-105">Fazer diagnóstico gratuito</a>}
             </motion.article>
           ))}
         </div>

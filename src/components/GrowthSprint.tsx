@@ -38,7 +38,7 @@ export default function GrowthSprint() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-70px' }} transition={{ duration: .65 }} className="mt-14 border-t border-white/[.09] pt-10">
           <div className="text-center"><p className="text-xs font-semibold uppercase tracking-[.22em] text-zinc-500">Dependendo do diagnóstico, o Sprint pode envolver</p><div className="mx-auto mt-5 grid max-w-3xl gap-2 text-left sm:grid-cols-2">{deliverables.map(item => <div key={item} className="flex items-center gap-2.5 text-sm text-zinc-300"><span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f35516] text-[11px] font-black text-white">✓</span>{item}</div>)}</div><p className="mx-auto mt-6 w-fit rounded-full border border-[#f35516]/25 bg-[#f35516]/10 px-4 py-2 text-xs font-semibold text-[#f35516]">Prazo típico: até 14 dias úteis, conforme o escopo definido.</p></div>
-          <a href="#/diagnostico" className="mx-auto mt-8 flex w-fit rounded-full bg-[#f35516] px-7 py-4 text-sm font-bold text-white shadow-[0_0_30px_-8px_#f35516] transition-transform hover:scale-105">Quero descobrir o que minha operação precisa</a>
+          <a href="/diagnostico" className="mx-auto mt-8 flex w-fit rounded-full bg-[#f35516] px-7 py-4 text-sm font-bold text-white shadow-[0_0_30px_-8px_#f35516] transition-transform hover:scale-105">Quero descobrir o que minha operação precisa</a>
         </motion.div>
       </div>
     </section>

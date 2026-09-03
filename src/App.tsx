@@ -18,16 +18,23 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 function App() {
   const navOpacity = useMotionValue(1);
-  const [isDiagnostic, setIsDiagnostic] = useState(() => window.location.hash === '#/diagnostico');
+  const [isDiagnostic, setIsDiagnostic] = useState(
+    () => window.location.pathname.replace(/\/+$/, '') === '/diagnostico',
+  );
 
   useEffect(() => {
-    const syncRoute = () => setIsDiagnostic(window.location.hash === '#/diagnostico');
-    window.addEventListener('hashchange', syncRoute);
-    return () => window.removeEventListener('hashchange', syncRoute);
+    const syncRoute = () => {
+      setIsDiagnostic(window.location.pathname.replace(/\/+$/, '') === '/diagnostico');
+    };
+    window.addEventListener('popstate', syncRoute);
+    return () => window.removeEventListener('popstate', syncRoute);
   }, []);
 
   if (isDiagnostic) {
-    return <DiagnosticApp onBackToDeck={() => { window.location.hash = ''; }} />;
+    return <DiagnosticApp onBackToDeck={() => {
+      window.history.pushState({}, '', '/');
+      setIsDiagnostic(false);
+    }} />;
   }
 
   return (

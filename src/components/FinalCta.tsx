@@ -8,7 +8,7 @@ export default function FinalCta() {
         <span className="inline-flex rounded-full border border-[#f35516]/30 bg-[#f35516]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[.22em] text-[#f35516]">Diagnóstico gratuito</span>
         <h2 className="mt-6 text-4xl font-bold leading-[.95] tracking-tighter text-white md:text-6xl lg:text-7xl">Seu negócio cresceu.<br /><span className="text-[#f35516]">Agora faça sua estrutura acompanhar.</span></h2>
         <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-zinc-400 md:text-lg">Descubra onde marketing, atendimento, vendas e dados podem estar desconectados e quais pontos merecem atenção primeiro.</p>
-        <a href="#/diagnostico" className="mt-9 inline-flex rounded-full bg-[#f35516] px-8 py-4 text-sm font-bold text-white shadow-[0_0_32px_-8px_#f35516] transition-transform hover:scale-105">Fazer diagnóstico gratuito</a>
+        <a href="/diagnostico" className="mt-9 inline-flex rounded-full bg-[#f35516] px-8 py-4 text-sm font-bold text-white shadow-[0_0_32px_-8px_#f35516] transition-transform hover:scale-105">Fazer diagnóstico gratuito</a>
       </motion.div>
     </section>
   );

@@ -115,7 +115,7 @@ export default function Navbar({ opacity }: { opacity: MotionValue<number> }) {
 
         {/* Availability Badge — desktop */}
         <motion.a
-          href="#/diagnostico"
+          href="/diagnostico"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
