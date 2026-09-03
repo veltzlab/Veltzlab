@@ -45,7 +45,7 @@ export type Lead = {
 
 type Phase = "intro" | "quiz" | "lead" | "results";
 
-const STORAGE_KEY = "veltz-os-diagnostico-v2";
+const STORAGE_KEY = "veltz-os-diagnostico-v3";
 
 const emptyLead: Lead = {
   nome: "",
@@ -76,6 +76,7 @@ export default function DiagnosticApp({
   const [phase, setPhase] = useState<Phase>("intro");
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
+  const [otherAnswers, setOtherAnswers] = useState<Record<string, string>>({});
   const [lead, setLead] = useState<Lead>(emptyLead);
   const [dir, setDir] = useState(1);
   const [errors, setErrors] = useState<Partial<Record<keyof Lead, string>>>({});
@@ -87,6 +88,7 @@ export default function DiagnosticApp({
       if (raw) {
         const saved = JSON.parse(raw);
         if (saved.answers) setAnswers(saved.answers);
+        if (saved.otherAnswers) setOtherAnswers(saved.otherAnswers);
         if (saved.lead) setLead({ ...emptyLead, ...saved.lead });
       }
     } catch {
@@ -96,11 +98,11 @@ export default function DiagnosticApp({
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, lead }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, otherAnswers, lead }));
     } catch {
       /* ignore */
     }
-  }, [answers, lead]);
+  }, [answers, otherAnswers, lead]);
 
   const question = QUESTIONS[qIndex];
   const pillar = question ? PILLAR_MAP[question.pillar] : null;
@@ -124,6 +126,10 @@ export default function DiagnosticApp({
   const answer = useCallback(
     (score: number) => {
       setAnswers((prev) => ({ ...prev, [question.id]: score }));
+      setOtherAnswers((prev) => {
+        const { [question.id]: _, ...rest } = prev;
+        return rest;
+      });
       window.setTimeout(goToNextQuestion, 260);
     },
     [goToNextQuestion, question],
@@ -171,6 +177,19 @@ export default function DiagnosticApp({
     [question],
   );
 
+  const selectOtherAnswer = useCallback(() => {
+    setAnswers((prev) => ({ ...prev, [question.id]: "Outro" }));
+  }, [question]);
+
+  const setOtherAnswer = useCallback(
+    (value: string) => setOtherAnswers((prev) => ({ ...prev, [question.id]: value })),
+    [question],
+  );
+
+  const continueOtherAnswer = useCallback(() => {
+    if (otherAnswers[question.id]?.trim()) goToNextQuestion();
+  }, [goToNextQuestion, otherAnswers, question]);
+
   const back = useCallback(() => {
     setDir(-1);
     if (qIndex > 0) setQIndex((i) => i - 1);
@@ -198,6 +217,7 @@ export default function DiagnosticApp({
 
   const restart = () => {
     setAnswers({});
+    setOtherAnswers({});
     setQIndex(0);
     setPhase("intro");
     try {
@@ -237,7 +257,12 @@ export default function DiagnosticApp({
           ? `'${`${lead.ddi.trim()} ${lead.whatsapp.trim()}`.trim()}`
           : "",
       },
-      answers,
+      answers: Object.fromEntries(
+        Object.entries(answers).map(([id, answer]) => [
+          id,
+          answer === "Outro" ? `Outro: ${otherAnswers[id]?.trim() || "Não informado"}` : answer,
+        ]),
+      ),
       result: {
         overall: result.overall,
         level: result.level.name,
@@ -502,6 +527,49 @@ export default function DiagnosticApp({
                       );
                     })}
                   </div>
+
+                  {!question.multiple && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={selectOtherAnswer}
+                        className={`group mt-2.5 flex w-full items-center gap-4 rounded-2xl border px-5 py-4 text-left transition-all duration-200 ${
+                          answers[question.id] === "Outro"
+                            ? "border-brand bg-brand/10"
+                            : "border-white/8 bg-white/[0.02] hover:border-brand/40 hover:bg-white/[0.04]"
+                        }`}
+                      >
+                        <span className={`flex h-7 w-7 flex-none items-center justify-center rounded-lg border text-xs font-semibold ${answers[question.id] === "Outro" ? "border-brand bg-brand text-ink" : "border-white/15 text-muted"}`}>
+                          {answers[question.id] === "Outro" ? <Check className="h-3.5 w-3.5" /> : "+"}
+                        </span>
+                        <span className="text-sm leading-relaxed text-zinc-300 sm:text-base">Outro</span>
+                      </button>
+
+                      {answers[question.id] === "Outro" && (
+                        <div className="mt-3">
+                          <label className="block text-xs font-medium text-muted" htmlFor={`outro-${question.id}`}>
+                            Descreva sua resposta
+                          </label>
+                          <input
+                            id={`outro-${question.id}`}
+                            value={otherAnswers[question.id] ?? ""}
+                            onChange={(event) => setOtherAnswer(event.target.value)}
+                            placeholder="Escreva aqui"
+                            className="mt-1.5 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-muted/40 focus:border-brand/60 focus:bg-white/[0.05]"
+                          />
+                          <button
+                            type="button"
+                            onClick={continueOtherAnswer}
+                            disabled={!otherAnswers[question.id]?.trim()}
+                            className="group mt-4 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-brand-soft to-brand px-6 py-4 text-base font-semibold text-ink transition-transform enabled:hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-40"
+                          >
+                            Continuar
+                            <ArrowRight className="h-5 w-5" />
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
 
                   {question.multiple && (
                     <>

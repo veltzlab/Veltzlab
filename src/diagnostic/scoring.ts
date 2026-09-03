@@ -9,7 +9,7 @@ import {
   type PillarId,
 } from "./data";
 
-export type Answers = Record<string, number | string[]>;
+export type Answers = Record<string, number | string | string[]>;
 
 export type PillarResult = {
   pillar: Pillar;
@@ -55,12 +55,13 @@ export function computeResult(answers: Answers): DiagnosticResult {
   // --- per pillar score -------------------------------------------------
   const pillarResults: PillarResult[] = PILLARS.map((pillar) => {
     const qs = QUESTIONS.filter((q) => q.pillar === pillar.id && !q.multiple);
-    const max = qs.length * 3;
-    const sum = qs.reduce((acc, q) => {
+    const scoredQuestions = qs.filter((q) => typeof answers[q.id] === "number");
+    const max = scoredQuestions.length * 3;
+    const sum = scoredQuestions.reduce((acc, q) => {
       const answer = answers[q.id];
       return acc + (typeof answer === "number" ? answer : 0);
     }, 0);
-    const score = max === 0 ? 0 : Math.round((sum / max) * 100);
+    const score = max === 0 ? 50 : Math.round((sum / max) * 100);
     const band = bandOf(score);
     return {
       pillar,
@@ -110,7 +111,7 @@ export function computeResult(answers: Answers): DiagnosticResult {
 
   const answered = QUESTIONS.filter((q) => {
     const answer = answers[q.id];
-    return Array.isArray(answer) ? answer.length > 0 : answer !== undefined;
+    return Array.isArray(answer) ? answer.length > 0 : Boolean(answer !== undefined && answer !== "");
   }).length;
 
   return {
