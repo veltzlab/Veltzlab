@@ -468,14 +468,7 @@ export default function DiagnosticApp({
                 </span>
               </div>
 
-              <AnimatePresence mode="wait" custom={dir}>
-                <motion.div
-                  key={question.id}
-                  initial={{ opacity: 0, x: dir > 0 ? 40 : -40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: dir > 0 ? -40 : 40 }}
-                  transition={{ duration: 0.35, ease: EASE }}
-                >
+              <div key={question.id}>
                   <h2 className="font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl md:text-4xl">
                     {question.text}
                   </h2>
@@ -598,8 +591,7 @@ export default function DiagnosticApp({
                     </button>
                     </>
                   )}
-                </motion.div>
-              </AnimatePresence>
+              </div>
 
               <div className="mt-8 flex items-center justify-between">
                 <button
